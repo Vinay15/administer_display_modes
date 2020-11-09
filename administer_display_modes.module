@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function administer_display_modes_ENTITY_TYPE_access(\Drupal\Core\Entity\EntityInterface $entity, $operation, \Drupal\Core\Session\AccountInterface $account) {
+
+}

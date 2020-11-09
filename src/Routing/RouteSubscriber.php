@@ -43,10 +43,45 @@ class RouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-    foreach ($this->settings as $entity_id => $display_mode) {
-      if ($route = $collection->get('entity.user.collection')) {
-        $perm = $route->getRequirement('_permission') . '+access users overview';
-        $route->setRequirement('_permission', $perm);
+    if ($this->settings) {
+//      $current_user_account = \Drupal::currentUser()->getAccount();
+      foreach ($this->settings as $entity_id => $display_mode) {
+        if ($route = $collection->get('entity.entity_view_mode.add_form')) {
+//          $exist_perm = $route->getRequirement('_permission');
+//          $new_perm = 'add view modes for ' . $entity_id;
+//          $perm = $exist_perm ? $exist_perm . '+' . $new_perm : $new_perm;
+          $route->setRequirement('_custom_access', '\Drupal\administer_display_modes\Controller\DisplayModesAccessController::viewModeAccess');
+        }
+//        if ($route = $collection->get('entity.entity_view_mode.edit_form')) {
+//          $exist_perm = $route->getRequirement('_permission');
+//          $new_perm = 'edit view modes for ' . $entity_id;
+//          $perm = $exist_perm ? $exist_perm . '+' . $new_perm : $new_perm;
+//          $route->setRequirement('_custom_access', '\Drupal\administer_display_modes\Controller\DisplayModesAccessController::access');
+//        }
+//        if ($route = $collection->get('entity.entity_view_mode.delete_form')) {
+//          $exist_perm = $route->getRequirement('_permission');
+//          $new_perm = 'delete view modes for ' . $entity_id;
+//          $perm = $exist_perm ? $exist_perm . '+' . $new_perm : $new_perm;
+//          $route->setRequirement('_custom_access', $this->displayModeAccessCheck->access($perm, $current_user_account));
+//        }
+        if ($route = $collection->get('entity.entity_form_mode.add_form')) {
+//          $exist_perm = $route->getRequirement('_permission');
+//          $new_perm = 'add form modes for ' . $entity_id;
+//          $perm = $exist_perm ? $exist_perm . '+' . $new_perm : $new_perm;
+          $route->setRequirement('_custom_access', '\Drupal\administer_display_modes\Controller\DisplayModesAccessController::formModeAccess');
+        }
+//        if ($route = $collection->get('entity.entity_form_mode.edit_form')) {
+//          $exist_perm = $route->getRequirement('_permission');
+//          $new_perm = 'edit form modes for ' . $entity_id;
+//          $perm = $exist_perm ? $exist_perm . '+' . $new_perm : $new_perm;
+//          $route->setRequirement('_custom_access', $this->displayModeAccessCheck->access($perm, $current_user_account));
+//        }
+//        if ($route = $collection->get('entity.entity_form_mode.delete_form')) {
+//          $exist_perm = $route->getRequirement('_permission');
+//          $new_perm = 'delete form modes for ' . $entity_id;
+//          $perm = $exist_perm ? $exist_perm . '+' . $new_perm : $new_perm;
+//          $route->setRequirement('_custom_access', $this->displayModeAccessCheck->access($perm, $current_user_account));
+//        }
       }
     }
   }
@@ -56,7 +91,7 @@ class RouteSubscriber extends RouteSubscriberBase {
    */
   public static function getSubscribedEvents() {
     $events = parent::getSubscribedEvents();
-    $events[RoutingEvents::ALTER] = ['onAlterRoutes', -100];
+    $events[RoutingEvents::ALTER] = ['onAlterRoutes'];
     return $events;
   }
 
