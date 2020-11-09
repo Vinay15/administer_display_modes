@@ -1,0 +1,7 @@
+administer_display_modes.settings:
+  path: '/admin/structure/display-modes/administer'
+  defaults:
+    _form: '\Drupal\administer_display_modes\Form\AdministerDisplayModesSettingsForm'
+    _title: 'Administer Display Modes'
+  requirements:
+    _permission: 'administer display modes'

@@ -1,0 +1,6 @@
+services:
+  administer_display_modes.subscriber:
+    class: Drupal\administer_display_modes\Routing\RouteSubscriber
+    arguments: ['@config.factory']
+    tags:
+      - { name: event_subscriber }
