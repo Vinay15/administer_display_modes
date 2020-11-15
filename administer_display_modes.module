@@ -1,8 +1,93 @@
 <?php
 
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Entity\EntityFormMode;
+use Drupal\Core\Entity\Entity\EntityViewMode;
+use Drupal\Core\Session\AccountInterface;
+
 /**
  * Implements hook_ENTITY_TYPE_access().
  */
-function administer_display_modes_ENTITY_TYPE_access(\Drupal\Core\Entity\EntityInterface $entity, $operation, \Drupal\Core\Session\AccountInterface $account) {
+function administer_display_modes_entity_form_mode_access(EntityFormMode $entity, $operation, AccountInterface $account) {
+  $type = $entity->getTargetType();
+  $config = \Drupal::config('administer_display_modes.settings');
+  foreach ($config->get('display_modes') as $entity_id => $display_mode) {
+    if ($display_mode['form_mode']) {
+      $allowed_entities[] = $entity_id;
+    }
+  }
+  switch ($operation) {
+    case 'update':
+      $access = AccessResult::allowedIfHasPermission($account, 'administer display modes');
+      if (isset($allowed_entities) && in_array($type, $allowed_entities)) {
+        $access = AccessResult::allowedIfHasPermissions($account, [
+          'administer display modes',
+          'edit form modes for ' . $type
+        ], 'OR')->addCacheableDependency($config);
+      }
+      break;
 
+    case 'delete':
+      $access = AccessResult::allowedIfHasPermission($account, 'administer display modes');
+      if (isset($allowed_entities) && in_array($type, $allowed_entities)) {
+        $access = AccessResult::allowedIfHasPermissions($account, [
+          'administer display modes',
+          'delete form modes for ' . $type
+        ], 'OR')->addCacheableDependency($config);
+      }
+      break;
+
+    default:
+      $access = AccessResult::allowedIfHasPermission($account, 'administer display modes');
+  }
+
+  return $access;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function administer_display_modes_entity_view_mode_access(EntityViewMode $entity, $operation, AccountInterface $account) {
+  $type = $entity->getTargetType();
+  $config = \Drupal::config('administer_display_modes.settings');
+  foreach ($config->get('display_modes') as $entity_id => $display_mode) {
+    if ($display_mode['view_mode']) {
+      $allowed_entities[] = $entity_id;
+    }
+  }
+  switch ($operation) {
+    case 'update':
+      $access = AccessResult::allowedIfHasPermission($account, 'administer display modes');
+      if (isset($allowed_entities) && in_array($type, $allowed_entities)) {
+        $access = AccessResult::allowedIfHasPermissions($account, [
+          'administer display modes',
+          'edit view modes for ' . $type
+        ], 'OR')->addCacheableDependency($config);
+      }
+      break;
+
+    case 'delete':
+      $access = AccessResult::allowedIfHasPermission($account, 'administer display modes');
+      if (isset($allowed_entities) && in_array($type, $allowed_entities)) {
+        $access = AccessResult::allowedIfHasPermissions($account, [
+          'administer display modes',
+          'delete view modes for ' . $type
+        ], 'OR')->addCacheableDependency($config);
+      }
+      break;
+
+    default:
+      $access = AccessResult::allowedIfHasPermission($account, 'administer display modes');
+  }
+
+  return $access;
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function administer_display_modes_entity_type_alter(array &$entity_types) {
+  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  $entity_types['entity_form_mode']->setListBuilderClass('Drupal\administer_display_modes\EntityFormModeListBuilder');
+  $entity_types['entity_view_mode']->setListBuilderClass('Drupal\administer_display_modes\EntityDisplayModeListBuilder');
 }

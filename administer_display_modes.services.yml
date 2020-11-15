@@ -1,6 +1,10 @@
 services:
-  administer_display_modes.subscriber:
+  administer_display_modes.route_subscriber:
     class: Drupal\administer_display_modes\Routing\RouteSubscriber
-    arguments: ['@config.factory']
     tags:
       - { name: event_subscriber }
+  administer_display_modes.access_checker:
+    class: Drupal\administer_display_modes\Access\DisplayModesAccessCheck
+    arguments: ['@config.factory']
+    tags:
+      - { name: access_check, applies_to: _custom_access }
