@@ -2,5 +2,6 @@ name: Administer Display Modes by Role
 description: 'Provides granular permissions for user roles to administer display modes.'
 type: module
 core_version_requirement: ^8 || ^9
+configure: administer_display_modes.settings
 dependencies:
   - drupal:field_ui
