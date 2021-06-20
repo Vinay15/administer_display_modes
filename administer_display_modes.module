@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Provides hook implementations for Administer Display modes.
+ */
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\Entity\EntityFormMode;
 use Drupal\Core\Entity\Entity\EntityViewMode;
@@ -22,7 +27,7 @@ function administer_display_modes_entity_form_mode_access(EntityFormMode $entity
       if (isset($allowed_entities) && in_array($type, $allowed_entities)) {
         $access = AccessResult::allowedIfHasPermissions($account, [
           'administer display modes',
-          'edit form modes for ' . $type
+          'edit form modes for ' . $type,
         ], 'OR')->addCacheableDependency($config);
       }
       break;
@@ -32,7 +37,7 @@ function administer_display_modes_entity_form_mode_access(EntityFormMode $entity
       if (isset($allowed_entities) && in_array($type, $allowed_entities)) {
         $access = AccessResult::allowedIfHasPermissions($account, [
           'administer display modes',
-          'delete form modes for ' . $type
+          'delete form modes for ' . $type,
         ], 'OR')->addCacheableDependency($config);
       }
       break;
@@ -61,7 +66,7 @@ function administer_display_modes_entity_view_mode_access(EntityViewMode $entity
       if (isset($allowed_entities) && in_array($type, $allowed_entities)) {
         $access = AccessResult::allowedIfHasPermissions($account, [
           'administer display modes',
-          'edit view modes for ' . $type
+          'edit view modes for ' . $type,
         ], 'OR')->addCacheableDependency($config);
       }
       break;
@@ -71,7 +76,7 @@ function administer_display_modes_entity_view_mode_access(EntityViewMode $entity
       if (isset($allowed_entities) && in_array($type, $allowed_entities)) {
         $access = AccessResult::allowedIfHasPermissions($account, [
           'administer display modes',
-          'delete view modes for ' . $type
+          'delete view modes for ' . $type,
         ], 'OR')->addCacheableDependency($config);
       }
       break;
